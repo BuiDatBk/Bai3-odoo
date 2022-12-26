@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="plan_sale_order_form_view" model="ir.ui.view">
+            <field name="name">plan_sale_order_form</field>
+            <field name="model">plan.sale.order</field>
+            <field name="arch" type="xml">
+                <form string="Plan Sale Order">
+                    <header>
+                        <button name="action_send_to_review" string="Send For Approve" type="object"
+                                class="btn-primary oe_highlight" attrs="{'invisible': [('btn_visible_state', '=', False)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,approve,refuse"/>
+
+                    </header>
+
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('read_only', '=', True)]}"/>
+                            <field name="quotation" attrs="{'readonly': [('read_only', '=', True)]}"/>
+                            <field name="btn_visible_state" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="plan_information" attrs="{'readonly': [('read_only', '=', True)]}"/>
+                            <field name="read_only" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Approvers">
+                            <field name="approval_ids" attrs="{'readonly': [('read_only', '=', True)]}">
+                                <tree editable="bottom" >
+                                    <field name="approver"/>
+                                    <field name="status_approval"/>
+                                    <field name="btn_visible" invisible="1"/>
+                                    <button name="action_approve" string="Approve" type="object"
+                                            class="oe_highlight" attrs="{'invisible': [('btn_visible', '=', False)]}"/>
+                                    <button name="action_refuse" string="Refuse" type="object"
+                                            class="oe_highlight" attrs="{'invisible': [('btn_visible', '=', False)]}"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="approver"/>
+                                        <field name="status_approval"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="plan_sale_order_tree_view" model="ir.ui.view">
+            <field name="name">Plan Sale Order</field>
+            <field name="model">plan.sale.order</field>
+            <field name="arch" type="xml">
+                <tree string="Plan Sale Order">
+                    <field name="name"/>
+                    <field name="quotation"/>
+                    <field name="plan_information"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="plan_sale_order_act_window" model="ir.actions.act_window">
+            <field name="name">Plan Sale Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">plan.sale.order</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('plan_sale_order.plan_sale_order_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('plan_sale_order.plan_sale_order_form_view')})]"
+            />
+        </record>
+
+        <menuitem name="Plan Sale Order" id="plan_sale_order_menu" parent="sale.sale_order_menu"
+                  action="plan_sale_order.plan_sale_order_act_window"/>
+
+    </data>
+</odoo>
