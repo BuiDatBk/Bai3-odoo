@@ -10,14 +10,14 @@ class ModelName(models.Model):
         ('approved', 'Approved'),
         ('not_approve', 'Not Approved Yet'),
         ('refused', 'Refused'),
-    ], default='draft')
+    ], default='draft',readonly=True)
     plan_sale_id = fields.Many2one('plan.sale.order')
     btn_visible = fields.Boolean(string='Visible', compute='visible')
 
     def visible(self):
         for rec in self:
             if rec.status_approval == 'not_approve':
-                rec.btn_visible = rec.approver == self.env.user
+                rec.btn_visible = rec.approver == self.env.user or self.env.user == self.create_uid
             else:
                 rec.btn_visible = False
 
@@ -26,7 +26,14 @@ class ModelName(models.Model):
             rec.status_approval = 'approved'
 
     def action_refuse(self):
+        message_list = self.plan_sale_id.create_uid
+
+        self.plan_sale_id.sudo().message_post(body=f"{self.approver.name} đã từ chối duyệt sale plan của bạn",
+                                 partner_ids=[message_list.partner_id.id],
+                                 message_type='notification')
         for rec in self:
             rec.status_approval = 'refused'
+
+
 
 

@@ -9,7 +9,10 @@
                 <form string="Plan Sale Order">
                     <header>
                         <button name="action_send_to_review" string="Send For Approve" type="object"
-                                class="btn-primary oe_highlight" attrs="{'invisible': [('btn_visible_state', '=', False)]}"/>
+                                class="btn-primary oe_highlight"
+                                attrs="{'invisible': [('btn_visible_state', '=', False)]}"/>
+                        <button name="action_reset" string="Reset" type="object"
+                                attrs="{'invisible': [('btn_reset_invisible', '=', True)]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,sent,approve,refuse"/>
 
                     </header>
@@ -17,8 +20,9 @@
                     <group>
                         <group>
                             <field name="name" attrs="{'readonly': [('read_only', '=', True)]}"/>
-                            <field name="quotation" attrs="{'readonly': [('read_only', '=', True)]}"/>
+                            <field name="quotation"/>
                             <field name="btn_visible_state" invisible="1"/>
+                            <field name="btn_reset_invisible" invisible="1"/>
                         </group>
                         <group>
                             <field name="plan_information" attrs="{'readonly': [('read_only', '=', True)]}"/>
@@ -28,7 +32,7 @@
                     <notebook>
                         <page string="Approvers">
                             <field name="approval_ids" attrs="{'readonly': [('read_only', '=', True)]}">
-                                <tree editable="bottom" >
+                                <tree editable="bottom">
                                     <field name="approver"/>
                                     <field name="status_approval"/>
                                     <field name="btn_visible" invisible="1"/>

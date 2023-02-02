@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="target_assessment_report_form" model="ir.ui.view">
+            <field name="name">target.assessment.report</field>
+            <field name="model">target.assessment.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group class="oe_title">
+                        <field name="month"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="team_sales"/>
+                    </group>
+                    <footer>
+                        <button name="action_export_data" string="XUẤT DỮ LIỆU" type="object" class="btn-primary"
+                                data-hotkey="q"/>
+                        <button string="HỦY" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="target_assessment_report_action" model="ir.actions.act_window">
+            <field name="name">Target Assessment Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">target.assessment.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="target_assessment_report_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Target Assessment Report" id="target_assessment_report_menu" parent="crm.crm_menu_report"
+                  action="advanced_crm.target_assessment_report_action" sequence="31"/>
+    </data>
+</odoo>

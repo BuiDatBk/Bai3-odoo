@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+order_creation_limit,Limit,model_order_creation_limit,base.group_user,1,1,1,1
+order_creation_limit_line,LimitLine,model_order_creation_limit_line,base.group_user,1,1,1,1
+spending_report,Spending,model_report_spending,base.group_user,1,1,1,1
+report,Report,model_report,base.group_user,1,1,1,1

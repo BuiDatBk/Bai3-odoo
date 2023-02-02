@@ -17,20 +17,67 @@ class PlanSaleOrder(models.Model):
         ('refuse', 'Refused'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft', compute='update_state')
 
-    btn_visible_state = fields.Boolean(string='Visible', compute='visible')
+    btn_reset_invisible = fields.Boolean(compute='compute_btn_reset_invisible')
+    btn_visible_state = fields.Boolean(string='Visible', compute='compute_visible')
     read_only = fields.Boolean(string='Add a Line', compute='is_readonly')
 
-    def action_send_to_review(self):
-        self.ensure_one()
-        message_list = self.approval_ids.mapped("approver.partner_id.id")
+    def compute_btn_reset_invisible(self):
+        for rec in self:
+            if rec.state == 'refuse':
+                rec.btn_reset_invisible = False
+            else:
+                rec.btn_reset_invisible = True
 
-        self.sudo().message_post(body='Business plan need approval',
-                                 partner_ids=message_list,
-                                 message_type='notification')
+    def action_reset(self):
+        self.state = 'sent'
+        for line in self.approval_ids:
+            line.status_approval = 'not_approve'
+
+    def action_send_to_review(self):
+        # self.ensure_one()
+        # message_list = self.approval_ids.mapped("approver.partner_id.id")
+        # self.sudo().message_post(body='Business plan need approval',
+        #                          partner_ids=message_list,
+        #                          message_type='notification')
+
+        # send a activity
+        self.ensure_one()
+        todos = [{
+            'res_id': self.id,
+            'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'plan.sale.order')]).id,
+            'user_id': approval.approver.id,
+            'summary': 'can confirm',
+            'note': 'Plan can xac nhan',
+            'activity_type_id': 4,  # trong database - psql/select * from mail_activity_type - choose activity type
+            'date_deadline': fields.datetime.now(),
+        } for approval in self.approval_ids]
+        # for approval in self.env.ref('plan_sale_order.group_approval').users
+
+        for todo in todos:
+            self.env['mail.activity'].sudo().create(todo)
+            self.env.cr.commit()
+
         for rec in self:
             rec.state = 'sent'
             for line in rec.approval_ids:
                 line.status_approval = 'not_approve'
+
+    def create_activity(self):
+        self.ensure_one()
+        todos = [{
+            'res_id': self.id,
+            'res_model_id': self.env['ir.model'].sudo().search([('model', '=', 'purchase.order')]).id,
+            'user_id': kt.id,
+            'summary': 'can confirm',
+            'note': 'Can nhan vien ke toan confirm',
+            'activity_type_id': 4,
+            'date_deadline': fields.date.today(),
+        } for kt in self.env.ref('purchase_inherit.invoice_employee').users]
+
+        for todo in todos:
+            self.env['mail.activity'].sudo().create(todo)
+            self.env.cr.commit()
+
 
     @api.depends('approval_ids.status_approval')
     def update_state(self):
@@ -57,9 +104,9 @@ class PlanSaleOrder(models.Model):
                 rec.state = 'sent'
 
     @api.depends('state')
-    def visible(self):
+    def compute_visible(self):
         for rec in self:
-            if rec.state != 'draft' and rec.state != 'refuse' :
+            if rec.state != 'draft':
                 rec.btn_visible_state = False
             else:
                 rec.btn_visible_state = True

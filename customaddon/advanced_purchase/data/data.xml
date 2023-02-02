@@ -1,0 +1,26 @@
+<odoo>
+    <data noupdate="1">
+
+        <!--        create a record for order_creation_limit_model-->
+        <record id="record_limit" model="order.creation.limit">
+            <!--            <field name="name">monthly report cron job</field>-->
+            <!--            <field name="active" eval="True"/>-->
+            <!--            <field name="order_creation_limit_ids" eval="[(5, 0, 0),-->
+            <!--            (0, 0, {'employee': value}),-->
+            <!--            (0, 0, {'view_mode': 'form', 'view_id': ref('plan_sale_order.plan_sale_order_form_view')})]"-->
+            <!--            />-->
+        </record>
+
+        <!--        create a record for hr_department_model-->
+        <record id="record_one_department" model="hr.department">
+            <field name="spending_limit_a_month">12345</field>
+            <field name="name">Phòng sản xuất</field>
+        </record>
+
+        <record id="record_two_department" model="hr.department">
+            <field name="spending_limit_a_month">6789</field>
+            <field name="name">Phòng IT</field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="report_tree_view" model="ir.ui.view">
+            <field name="name">Rp</field>
+            <field name="model">report.one</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="opportunity"/>
+                    <field name="person"/>
+                    <field name="team"/>
+                    <field name="min"/>
+                    <field name="sale_total"/>
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -11,18 +11,28 @@ class SaleOrderInherit(models.Model):
     name_plan = fields.Many2one('plan.sale.order', compute='compute_name_plan')
 
     def action_plan_sale_order(self):
+
         self.ensure_one()
-        return {
-            'res_model': 'plan.sale.order',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'view_type': 'form',
-            'view_id': self.env.ref("plan_sale_order.plan_sale_order_form_view").id,
-            'target': 'new',
-            'context': {
-                'default_quotation': self.id,
+        if self.name_plan:
+            return {
+                'res_model': 'plan.sale.order',
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form',
+                'target': 'current',
+                'domain': [('name', '=', self.name_plan.name)],
             }
-        }
+        else:
+            return {
+                'res_model': 'plan.sale.order',
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'view_id': self.env.ref("plan_sale_order.plan_sale_order_form_view").id,
+                'target': 'new',
+                'context': {
+                    'default_quotation': self.id,
+                }
+            }
 
     @api.depends('plan_sale')
     def compute_name_plan(self):
@@ -33,15 +43,15 @@ class SaleOrderInherit(models.Model):
                 rec.name_plan = False
 
     def action_confirm(self):
-        for rec in self:
-            if rec.plan_sale:
-                if rec.plan_sale.state == 'refuse':
-                    raise UserError(_('%s plan is refused') % (rec.plan_sale.name))
-                elif rec.plan_sale.state == 'sent':
-                    raise UserError(_('Not yet approved %s plan.') % (rec.plan_sale.name))
-                elif rec.plan_sale.state == 'draft':
-                    raise UserError(_('%s has not been sent.') % (rec.plan_sale.name))
-                else:
-                    super().action_confirm()
+        # check dieu kien truoc khi xac nhan
+        if not self.plan_sale:
+            raise UserError(_('No plan.'))
+        else:
+            if self.plan_sale.state == 'refuse':
+                raise UserError(_('%s plan is refused') % (self.plan_sale.name))
+            elif self.plan_sale.state == 'sent':
+                raise UserError(_('Not yet approved %s plan.') % (self.plan_sale.name))
+            elif self.plan_sale.state == 'draft':
+                raise UserError(_('%s has not been sent.') % (self.plan_sale.name))
             else:
-                raise UserError(_('No plan.'))
+                return super().action_confirm()

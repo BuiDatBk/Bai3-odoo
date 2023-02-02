@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="report_tree_view" model="ir.ui.view">
+            <field name="name">Rp</field>
+            <field name="model">report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="department"/>
+                    <field name="cost"/>
+                    <field name="spending_limit"/>
+                </tree>
+            </field>
+        </record>
+
+<!--        <record id="report_act_window" model="ir.actions.act_window">-->
+<!--            <field name="name">ModelTitle</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">ProjectName.report</field>-->
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="oe_view_nocontent_create">-->
+<!--                    There is no examples click here to add new ModelTitle.-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <menuitem name="ModelTitle" id="report_menu" parent="your_root_menu" action="report_act_window"/>-->
+
+    </data>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">advanced_crm.crm_lead_view.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//group/field[@name='user_id']" position="after">
+                    <field name="readonly_revenue" invisible='1'/>
+                    <field name="access_right" invisible='1'/>
+                    <field name="report_id" invisible='1'/>
+
+                    <field name="access_right_team_lead" invisible='1'/>
+                    <field name="min_revenue" attrs="{'readonly': [('readonly_revenue', '=', True)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_lead_view_tree_custom" model="ir.ui.view">
+            <field name="name">Opportunity</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="min_revenue" class="text-center" align="center"/>
+                    <field name="sale_amount_total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_lead_custom_act_window" model="ir.actions.act_window">
+            <field name="name">crm_lead_custom</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('advanced_crm.crm_lead_view_tree_custom')})]"
+            />
+        </record>
+
+        <menuitem name="Opportunity Custom" id="opportunity_menu" parent="crm.crm_menu_sales"
+                  action="advanced_crm.crm_lead_custom_act_window"/>
+
+        //tree_view target_assessment_report
+        <record id="crm_lead_target_view_tree_custom" model="ir.ui.view">
+            <field name="name">Target</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="team_id" class="text-center"/>
+                    <field name="sale_amount_total"/>
+                </tree>
+            </field>
+        </record>
+        <record id="crm_lead_target_custom_act_window" model="ir.actions.act_window">
+            <field name="name">crm_lead_custom</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('advanced_crm.crm_lead_target_view_tree_custom')})]"
+            />
+        </record>
+        <menuitem name="Target Report" id="target_report_menu" parent="crm.crm_menu_sales"
+                  action="advanced_crm.crm_lead_target_custom_act_window"/>
+
+    </data>
+</odoo>

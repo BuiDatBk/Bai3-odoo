@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="monthly_report_form_view" model="ir.ui.view">
+            <field name="name">monthly_report_form</field>
+            <field name="model">monthly.report</field>
+            <field name="arch" type="xml">
+                <form string="monthly report">
+                    <header>
+                        <button name="monthly_report" string="Send Email"/>
+                    </header>
+
+                    <group>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="monthly_report_tree_view" model="ir.ui.view">
+            <field name="name">monthly report</field>
+            <field name="model">monthly.report</field>
+            <field name="arch" type="xml">
+                <tree string="monthly report">
+                </tree>
+            </field>
+        </record>
+
+        <record id="monthly_report_act_window" model="ir.actions.act_window">
+            <field name="name">monthly report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">monthly.report</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('advanced_crm.monthly_report_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('advanced_crm.monthly_report_form_view')})]"
+            />
+        </record>
+
+        <menuitem name="Monthly Report" id="monthly_report_menu" parent="crm.crm_menu_root"
+                  action="advanced_crm.monthly_report_act_window"/>
+
+    </data>
+</odoo>

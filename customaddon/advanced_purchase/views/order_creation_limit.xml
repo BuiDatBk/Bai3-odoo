@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="order_creation_limit_form_view" model="ir.ui.view">
+            <field name="name">Order Create Limit</field>
+            <field name="model">order.creation.limit</field>
+            <field name="arch" type="xml">
+                <form string="Order Creation Limit">
+                    <notebook>
+                        <page string="Order Creation Limit">
+                            <field name="order_creation_limit_ids" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="employee"/>
+                                    <field name="limit"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="employee"/>
+                                        <field name="limit"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+
+<!--                    <div class="oe_chatter">-->
+<!--                        <field name="message_follower_ids"/>-->
+<!--                        <field name="activity_ids"/>-->
+<!--                        <field name="message_ids"/>-->
+<!--                    </div>-->
+                </form>
+            </field>
+        </record>
+
+        <record id="order_creation_limit_tree_view" model="ir.ui.view">
+            <field name="name">Order Creation Limit</field>
+            <field name="model">order.creation.limit</field>
+            <field name="arch" type="xml">
+                <tree string="Order Creation Limit">
+                    <field name="order_creation_limit_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="model_order_creation_limit_action_server" model="ir.actions.server">
+            <field name="name">Limit</field>
+            <field name="model_id" ref="advanced_purchase.model_order_creation_limit"/>
+            <field name="binding_view_types">form</field>
+            <field name="state">code</field>
+            <field name="code">action = env['order.creation.limit'].action_order_creation_limit()</field>
+        </record>
+
+        <record id="order_creation_limit_act_window" model="ir.actions.act_window">
+            <field name="name">Order Creation Limit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">order.creation.limit</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('advanced_purchase.order_creation_limit_tree_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('advanced_purchase.order_creation_limit_form_view')})]"
+            />
+
+        </record>
+
+        <menuitem
+                id="menu_order_creation_limit" name="Order Creation Limit"
+                action="advanced_purchase.model_order_creation_limit_action_server"
+                parent="purchase.menu_purchase_root" sequence="2"/>
+
+    </data>
+</odoo>

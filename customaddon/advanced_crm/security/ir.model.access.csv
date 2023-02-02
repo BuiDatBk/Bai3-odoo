@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+detailed_report,Report,model_detailed_report,base.group_user,1,1,1,1
+target_report,Target,model_target_assessment_report,base.group_user,1,1,1,1
+monthly_report,Monthly,model_monthly_report,base.group_user,1,1,1,1
+report_one,Month,model_report_one,base.group_user,1,1,1,1
+report_two,Month,model_report_two,base.group_user,1,1,1,1

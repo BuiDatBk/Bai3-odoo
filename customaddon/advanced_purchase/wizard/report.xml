@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="spending_report_form" model="ir.ui.view">
+            <field name="name">spending.report</field>
+            <field name="model">report.spending</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group class="oe_title">
+                        <field name="month"/>
+                    </group>
+                    <group class="oe_title">
+                        <field name="department"/>
+                    </group>
+                    <footer>
+                        <button name="action_export_data" string="XUẤT DỮ LIỆU" type="object" class="btn-primary"
+                                data-hotkey="q"/>
+                        <button string="HỦY" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="spending_report_action" model="ir.actions.act_window">
+            <field name="name">Spending Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report.spending</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="spending_report_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Spending Report" id="spending_report_menu" parent="purchase.purchase_report_main"
+                  action="advanced_purchase.spending_report_action" sequence="30"/>
+    </data>
+</odoo>
