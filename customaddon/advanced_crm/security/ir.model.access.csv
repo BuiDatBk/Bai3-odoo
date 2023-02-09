@@ -4,3 +4,7 @@ target_report,Target,model_target_assessment_report,base.group_user,1,1,1,1
 monthly_report,Monthly,model_monthly_report,base.group_user,1,1,1,1
 report_one,Month,model_report_one,base.group_user,1,1,1,1
 report_two,Month,model_report_two,base.group_user,1,1,1,1
+crm_report,Crm Month,model_crm_month_report_line,base.group_user,1,1,1,1
+purchase_report,Purchase Month,model_purchase_month_report_line,base.group_user,1,1,1,1
+
+

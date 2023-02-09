@@ -36,6 +36,7 @@
         'wizard/content_target_report.xml',
         'data/cron.xml',
         'data/email_template.xml',
+        # 'data/cron_plan_email.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

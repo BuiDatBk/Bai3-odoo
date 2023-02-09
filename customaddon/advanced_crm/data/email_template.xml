@@ -2,21 +2,17 @@
 
 
 <odoo>
-    <data>
+    <data noupdate="0">
         <record id="mail_template_mobile_merge_request" model="mail.template">
-            <field name="name">Yêu cầu cập nhật thông tin và duyệt gắn khách hàng trên mobile và khách hàng trên hệ
-                thống CRM
+            <field name="name">
+                Báo cáo về phòng kinh doanh và mua hàng
             </field>
             <field name="model_id" ref="advanced_crm.model_monthly_report"/>
-            <field name="subject">Yêu cầu cập nhật thông tin từ Mobile App</field>
-            <!--            <field name="email_from">${object.email_from | safe}</field>-->
-            <!--            <field name="email_to">${object.dealer_email_list | safe}</field>-->
-            <!--            <field name="email_to">buivandaty2k@gmail.com</field>-->
+            <field name="subject">Báo cáo hàng tháng về kinh doanh và mua hàng</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         <h1 style="color: #000;">I. Kinh doanh</h1>
-                        <br/>
                         <table class="table-without-space">
                             <tr>
                                 <!--                                <td style="border: 1px solid black; border-collapse: collapse; padding: 10px;">Stt</td>-->
@@ -34,24 +30,25 @@
                                 </td>
                             </tr>
 
-                            <!--                            {% for item in sales %}-->
-                            <!--                            <tr>-->
-                            <!--                                <td class="td-boder">{{ loop.index }}</td>-->
-                            <!--                                <td class="td-boder">{{ item.sale_team_name }}</td>-->
-                            <!--                                <td class="td-boder">{{ item.real_revenue }}</td>-->
-                            <!--                                <td class="td-boder">{{ item['diff'] }}</td>-->
-                            <!--                            </tr>-->
-                            <!--                            {% endfor %}-->
+                            <!-- CONTENT -->
+                            <t t-foreach="object.crm_month_report" t-as="crm_list">
+                                <tr>
+                                    <td align="center" t-esc="crm_list_index + 1"/>
+                                    <td align="center" t-out="crm_list.sales_team_id.name"/>
+                                    <td align="center" t-out="crm_list.actual_revenue"/>
+                                    <td align="center" t-out="crm_list.diff_actual_target"/>
+                                </tr>
+                            </t>
                         </table>
-
-                        <h1 style="color: #000;">II. Mua hàng</h1>
                         <br/>
+                        <br/>
+                        <h1 style="color: #000;">II. Mua hàng</h1>
                         <table class="table-without-space">
                             <tr>
                                 <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Stt
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td align="center" style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Tên phòng ban
                                 </td>
                                 <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
@@ -61,17 +58,15 @@
                                     Chênh lệch chi tiêu thực tế so với hạn mức
                                 </td>
                             </tr>
-
-                            <!--                            {% for item in purchase %}-->
-                            <!--                            <tr>-->
-                            <!--                                <td class="td-boder">{{ loop.index }}</td>-->
-                            <!--                                <td class="td-boder">{{ item.department_name }}</td>-->
-                            <!--                                <td class="td-boder">{{ item.real_cost }}</td>-->
-                            <!--                                <td class="td-boder">{{ item['diff'] }}</td>-->
-                            <!--                            </tr>-->
-                            <!--                            {% endfor %}-->
+                            <t t-foreach="object.purchase_month_report" t-as="purchase_list">
+                                <tr>
+                                    <td align="center" t-esc="purchase_list_index + 1"/>
+                                    <td align="center" t-out="purchase_list.department_id.name"/>
+                                    <td align="center" t-out="purchase_list.actual_spending"/>
+                                    <td align="center" t-out="purchase_list.diff_actual_limit"/>
+                                </tr>
+                            </t>
                         </table>
-
                     </p>
                 </div>
             </field>
@@ -80,93 +75,3 @@
         </record>
     </data>
 </odoo>
-
-
-<!--<odoo>-->
-<!--            <data>-->
-<!--                <record id="mail_template_mobile_merge_request" model="mail.template">-->
-<!--                    <field name="name">Yêu cầu cập nhật thông tin và duyệt gắn khách hàng trên mobile và khách hàng trên hệ-->
-<!--                        thống CRM-->
-<!--                    </field>-->
-<!--                    <field name="model_id" ref="advanced_customer_data.model_mobile_merge_request"/>-->
-<!--                    <field name="subject">Yêu cầu cập nhật thông tin từ Mobile App</field>-->
-<!--                    <field name="body_html" type="html">-->
-<!--                        <table border="0" cellpadding="0" cellspacing="0"-->
-<!--                               style="background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">-->
-<!--                            <tr>-->
-<!--                                <td align="center">-->
-<!--                                    <table border="0" cellpadding="0" cellspacing="0" width="590"-->
-<!--                                           style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">-->
-<!--                                        <tbody>-->
-<!--                                            <tr>-->
-<!--                                                <td align="center" style="min-width: 590px;">-->
-<!--                                                    <table border="0" cellpadding="0" cellspacing="0" width="590"-->
-<!--                                                           style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">-->
-<!--                                                        <td style="text-align : left">-->
-<!--                                                            <span style="font-size: 15px;font-weight: bold;">-->
-<!--                                                                Đại lý đã nhận được yêu cầu cập nhật thông tin từ Mobile App-->
-<!--                                                            </span>-->
-<!--                                                            <br/>-->
-<!--                                                            <br/>-->
-<!--                                                        </td>-->
-<!--                                                        <tr>-->
-<!--                                                            <td valign="top" style="font-size: 13px;">-->
-<!--                                                                <div>-->
-<!--                                                                    Tên: ${object.customer_name or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Loại khách hàng: ${object.customer_type or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Số điện thoại: ${object.phone or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Mã số thuế: ${object.vat or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Số CMND/CCCD: ${object.cmt or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Biển số xe: ${object.license_plates or ''}-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Ảnh chụp giấy phép kinh doanh:-->
-<!--                                                                    <br></br>-->
-<!--                                                                    % if object.customer_type == 'company':-->
-<!--                                                                        % for img in object.business_license_img:-->
-<!--                                                                            <img  src="${img.url}"/>-->
-<!--                                                                            <br></br>-->
-<!--                                                                        % endfor-->
-<!--                                                                    % endif-->
-<!--                                                                    % if object.customer_type == 'person':-->
-<!--                                                                        % for img in object.id_card_img:-->
-<!--                                                                            <img src="${img.url}"/>-->
-<!--                                                                            <br></br>-->
-<!--                                                                        % endfor-->
-<!--                                                                    % endif-->
-<!--                                                                    <br></br>-->
-<!--                                                                    Ảnh chụp biển số xe:-->
-<!--                                                                    <br></br>-->
-<!--                                                                    % for img in object.car_img:-->
-<!--                                                                        <img  src="${img.url}"/>-->
-<!--                                                                        <br></br>-->
-<!--                                                                    % endfor-->
-
-
-<!--                                                                </div>-->
-<!--                                                            </td>-->
-<!--                                                        </tr>-->
-<!--                                                        <tr>-->
-<!--                                                            <td style="text-align:center;">-->
-<!--                                                                <hr width="100%"-->
-<!--                                                                    style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>-->
-<!--                                                            </td>-->
-<!--                                                        </tr>-->
-<!--                                                    </table>-->
-<!--                                                </td>-->
-<!--                                            </tr>-->
-<!--                                        </tbody>-->
-<!--                                    </table>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-<!--                        </table>-->
-<!--                    </field>-->
-<!--                    <field name="lang" eval="False"/>-->
-<!--                    <field name="auto_delete" eval="True"/>-->
-<!--                </record>-->
-<!--            </data>-->
-<!--        </odoo>-->
