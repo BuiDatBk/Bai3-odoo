@@ -49,7 +49,7 @@ class DetaiedReport(models.Model):
                 'res_model': 'report.one',
                 'type': 'ir.actions.act_window',
                 'view_mode': 'tree',
-                'view_id': self.env.ref("advanced_crm.report_tree_view").id,
+                'view_id': self.env.ref("advanced_crm.detail_report_tree_view").id,
                 'target': 'current',
             }
 
@@ -82,6 +82,6 @@ class DetaiedReport(models.Model):
                 'res_model': 'report.one',
                 'type': 'ir.actions.act_window',
                 'view_mode': 'tree',
-                'view_id': self.env.ref("advanced_crm.report_tree_view").id,
+                'view_id': self.env.ref("advanced_crm.detail_report_tree_view").id,
                 'target': 'current',
             }

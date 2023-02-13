@@ -32,13 +32,12 @@ class MonthlyReport(models.Model):
         #     'email_to': 'buivandaty2k@gmail.com',
         # }
 
-            self.search([]).unlink()
             self.env['crm.month.report.line'].search([]).unlink()
             self.env['purchase.month.report.line'].search([]).unlink()
 
-            create_date = datetime.datetime.today().replace(day=1, month=2)
+            create_date = datetime.datetime.today().replace(day=1, month=datetime.datetime.now().month)
             date_from = create_date
-            date_to = datetime.datetime.today().replace(day=1, month=3)
+            date_to = datetime.datetime.today().replace(day=1, month=datetime.datetime.now().month + 1)
             opportunities = self.env['crm.lead'].search([
                 ('create_date', '>=', date_from), ('create_date', '<', date_to)
             ])
@@ -54,34 +53,33 @@ class MonthlyReport(models.Model):
 
             target = 0.0
             for team in self.env["crm.team"].search([]):
-                target = team.month2
-                # match self.month:
-                #     case "1":
-                #         target = self.env["crm.team"].browse(team).month1
-                #     case "2":
-                #         target = self.env["crm.team"].browse(team).month2
-                #     case "3":
-                #         target = self.env["crm.team"].browse(team).month3
-                #     case "4":
-                #         target = self.env["crm.team"].browse(team).month4
-                #     case "5":
-                #         target = self.env["crm.team"].browse(team).month5
-                #     case "6":
-                #         target = self.env["crm.team"].browse(team).month6
-                #     case "7":
-                #         target = self.env["crm.team"].browse(team).month7
-                #     case "8":
-                #         target = self.env["crm.team"].browse(team).month8
-                #     case "9":
-                #         target = self.env["crm.team"].browse(team).month9
-                #     case "10":
-                #         target = self.env["crm.team"].browse(team).month10
-                #     case "11":
-                #         target = self.env["crm.team"].browse(team).month11
-                #     case "12":
-                #         target = self.env["crm.team"].browse(team).month12
-                #     case _:
-                #         target = self.env["crm.team"].browse(team).month2
+                match datetime.datetime.now().month:
+                    case 1:
+                        target = team.month1
+                    case 2:
+                        target = team.month2
+                    case 3:
+                        target = team.month3
+                    case 4:
+                        target = team.month4
+                    case 5:
+                        target = team.month5
+                    case 6:
+                        target = team.month6
+                    case 7:
+                        target = team.month7
+                    case 8:
+                        target = team.month8
+                    case 9:
+                        target = team.month9
+                    case 10:
+                        target = team.month10
+                    case 11:
+                        target = team.month11
+                    case 12:
+                        target = team.month12
+                    case _:
+                        target = team.month2
                 crm_list_line.append({"team": team.id,
                                        "actual_revenue": team.cost,
                                        "diff_actual_target": team.cost - target})
@@ -129,5 +127,5 @@ class MonthlyReport(models.Model):
 
             mail_template = self.env.ref('advanced_crm.mail_template_mobile_merge_request')
             if mail_template:
-                mail_template.send_mail(self.env['monthly.report'].search([])[0].id, force_send=True,
+                mail_template.send_mail(self.env['monthly.report'].search([])[-1].id, force_send=True,
                                         email_values=email_values)

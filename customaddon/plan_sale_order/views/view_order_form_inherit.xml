@@ -7,8 +7,8 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form/header/button[@name='action_quotation_send']" position="after">
-                    <button name="action_plan_sale_order" string="Plan Sale Order" type="object" states="draft"
-                            class="btn-primary" data-hotkey="g" attrs="{'invisible': [('name_plan','=',False)]}"/>
+                    <button name="action_plan_sale_order" string="Plan Sale Order" type="object"
+                            class="btn-primary" attrs="{'invisible': [('name_plan','!=',False)]}"/>
                 </xpath>
                 <field name="payment_term_id" position="after">
                     <field name="name_plan"/>

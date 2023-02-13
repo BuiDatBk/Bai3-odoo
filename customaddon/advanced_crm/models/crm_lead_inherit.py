@@ -11,8 +11,8 @@ class ModelName(models.Model):
     min_revenue = fields.Float(string='Doanh thu tối thiểu\n(Trước VAT)')
     readonly_revenue = fields.Boolean(compute="compute_readonly_revenue")
     correct_sales_team = fields.Integer(compute="compute_correct_sales_team", store=True)
-    access_right = fields.Boolean(compute="compute_access_right")
-    access_right_team_lead = fields.Boolean(compute="compute_access_right_team_lead")
+    is_sale_person = fields.Boolean(compute="compute_is_sale_person")
+    is_team_lead = fields.Boolean(compute="compute_is_team_lead")
     report_id = fields.Many2one("target.assessment.report")
 
 
@@ -42,16 +42,16 @@ class ModelName(models.Model):
             else:
                 super().action_set_lost()
 
-    def compute_access_right(self):
+    def compute_is_sale_person(self):
         for rec in self:
-            rec.access_right = rec.user_id == self.env.user
+            rec.is_sale_person = rec.user_id == self.env.user or rec.create_uid == self.env.user
 
-    def compute_access_right_team_lead(self):
+    def compute_is_team_lead(self):
         for rec in self:
             if rec.user_id.crm_team_ids:
-                rec.access_right_team_lead = self.env.user in rec.user_id.crm_team_ids.mapped("user_id")
+                rec.is_team_lead = self.env.user in rec.user_id.crm_team_ids.mapped("user_id")
             else:
-                rec.access_right_team_lead = False
+                rec.is_team_lead = False
 
     @api.constrains('user_id')
     def _check_role(self):

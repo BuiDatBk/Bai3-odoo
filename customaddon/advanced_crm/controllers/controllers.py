@@ -1,8 +1,10 @@
+import datetime
+
 import odoo
 import logging
 import json
 
-from odoo.http import request
+from odoo.http import request, Response
 
 _logger = logging.getLogger(__name__)
 
@@ -18,42 +20,43 @@ class MonthlyReportAPI(odoo.http.Controller):
             "content": "Welcome to 'bar' API!"
         })
 
-    @odoo.http.route(['/pet/<dbname>/<id>'], type='http', auth="none", sitemap=False, cors='*', csrf=False)
-    def pet_handler(self, dbname, id, **kw):
-        model_name = "crm.lead"
+    @odoo.http.route(['/pet'], methods=['POST'], type='json', auth="none", csrf=True)
+    def pet_handler(self, **kw):
+        # body
+        if request.httprequest.json.get("token") != "odooneverdie":
+            return {"error": "Invalid Token"}
+
+        model_name = "monthly.report"
         try:
-            registry = odoo.modules.registry.Registry(dbname)
-            with odoo.api.Environment.manage(), registry.cursor() as cr:
-                env = odoo.api.Environment(cr, odoo.SUPERUSER_ID, {})
-                rec = env[model_name].search([('id', '=', int(id))], limit=1)
-                response = {
-                    "status": "ok",
-                    "sales": [
-                        {
-                            "sale_team_name": rec.name,
-                            "real_revenue": rec.min_revenue,
-                            "diff": 2000000
-                            # "dob": rec.dob.strftime('%d/%m/%Y'),
-                        },
-                        {
-                            "sale_team_name": rec.name,
-                            "real_revenue": rec.min_revenue,
-                            "diff": 2000000
-                        }
-                    ],
-                    "purchase": [
-                        {
-                            "department_name": rec.name,
-                            "real_cost": 1000000,
-                            "diff": -200000
-                        }
-                    ]
-                }
-        except Exception:
+            response = {}
+            records = request.env[model_name].sudo().search([])
+            for rec in records:
+                if rec.create_date.month != request.httprequest.json.get("month"):
+                    return response
+                crm_report = []
+                purchase_report = []
+                for crm in rec.crm_month_report:
+                    crm_report.append({
+                        "sale_team_name": crm.sales_team_id.name,
+                        "real_revenue": crm.actual_revenue,
+                        "diff": crm.diff_actual_target
+                    })
+                response["sales"] = crm_report
+
+                for purchase in rec.purchase_month_report:
+                    purchase_report.append({
+                        "department_name": purchase.department_id.name,
+                        "real_cost": purchase.actual_spending,
+                        "diff": purchase.diff_actual_limit
+                    })
+                response["purchase"] = purchase_report
+
+        except Exception as e:
             response = {
                 "status": "error",
                 "content": "not found"
             }
-        json.dumps(response)
+            raise e
+        return response
 
-        return request.make_response(json.dumps(response), headers=[('Content-Type', 'application/json')])
+        # return request.make_response(json.dumps(response), headers=[('Content-Type', 'application/json')])
