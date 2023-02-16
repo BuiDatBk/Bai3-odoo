@@ -9,6 +9,7 @@ class PurchaseOrderLineInherit(models.Model):
     propose_supplier = fields.Many2one("res.partner", string="Nhà cung cấp đề xuất", compute="compute_propose_supplier")
 
     # @api.depends('product_id.seller_ids.price', 'product_id.seller_ids.delay')
+    @api.onchange('price_unit')
     def compute_propose_supplier(self):
         for rec in self:
             if rec.product_id.seller_ids:

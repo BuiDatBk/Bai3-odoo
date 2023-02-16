@@ -9,6 +9,7 @@ from odoo.http import request, Response
 _logger = logging.getLogger(__name__)
 
 
+# kế thừa odoo.http.Controller
 class MonthlyReportAPI(odoo.http.Controller):
     @odoo.http.route('/foo', auth='public')
     def foo_handler(self):
@@ -20,6 +21,7 @@ class MonthlyReportAPI(odoo.http.Controller):
             "content": "Welcome to 'bar' API!"
         })
 
+    # tạo đường dẫn sử dụng phương thức POST
     @odoo.http.route(['/pet'], methods=['POST'], type='json', auth="none", csrf=True)
     def pet_handler(self, **kw):
         # body
@@ -27,12 +29,17 @@ class MonthlyReportAPI(odoo.http.Controller):
             return {"error": "Invalid Token"}
 
         model_name = "monthly.report"
+
         try:
             response = {}
+            # recordset báo cáo hàng tháng
             records = request.env[model_name].sudo().search([])
             for rec in records:
+
+                # kiểm tra xem record có khác với tháng yêu cầu
                 if rec.create_date.month != request.httprequest.json.get("month"):
                     return response
+
                 crm_report = []
                 purchase_report = []
                 for crm in rec.crm_month_report:

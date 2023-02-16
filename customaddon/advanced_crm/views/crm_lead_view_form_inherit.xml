@@ -10,10 +10,7 @@
                 
                 <xpath expr="//group/field[@name='user_id']" position="after">
                     <field name="readonly_revenue" invisible='1'/>
-                    <field name="is_sale_person" invisible='1'/>
                     <field name="report_id" invisible='1'/>
-
-                    <field name="is_team_lead" invisible='1'/>
                     <field name="min_revenue" attrs="{'readonly': [('readonly_revenue', '=', True)]}"/>
                 </xpath>
             </field>

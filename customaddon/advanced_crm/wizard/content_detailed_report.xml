@@ -6,7 +6,7 @@
             <field name="name">Rp</field>
             <field name="model">report.one</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree create="0">
                     <field name="opportunity"/>
                     <field name="person"/>
                     <field name="team"/>

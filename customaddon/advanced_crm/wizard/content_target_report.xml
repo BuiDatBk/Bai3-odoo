@@ -5,7 +5,7 @@
             <field name="name">Rp</field>
             <field name="model">report.two</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree create="0">
                     <field name="team"/>
                     <field name="actual_revenue"/>
                     <field name="revenue_target"/>

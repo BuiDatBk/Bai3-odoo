@@ -12,20 +12,30 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        <h1 style="color: #000;">I. Kinh doanh</h1>
-                        <table class="table-without-space">
+                        <table align="center">
                             <tr>
-                                <!--                                <td style="border: 1px solid black; border-collapse: collapse; padding: 10px;">Stt</td>-->
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td>
+                                    <h1>BÁO CÁO KINH DOANH VÀ MUA HÀNG THÁNG </h1>
+                                </td>
+                                <td>
+                                    <h1 t-out="object.create_date.month"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <h2 style="color: #000;">I. Kinh doanh</h2>
+                        <table class="table-without-space" style="border-style: double;" align="center">
+                            <tr>
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Stt
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Tên nhóm bán hàng
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Doanh thu thực tế
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Chênh lệch doanh thu thực tế so với chỉ tiêu tháng hiện tại
                                 </td>
                             </tr>
@@ -33,37 +43,41 @@
                             <!-- CONTENT -->
                             <t t-foreach="object.crm_month_report" t-as="crm_list">
                                 <tr>
-                                    <td align="center" t-esc="crm_list_index + 1"/>
-                                    <td align="center" t-out="crm_list.sales_team_id.name"/>
-                                    <td align="center" t-out="crm_list.actual_revenue"/>
-                                    <td align="center" t-out="crm_list.diff_actual_target"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="right"
+                                        t-esc="crm_list_index + 1"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="left"
+                                        t-out="crm_list.sales_team_id.name"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="right"
+                                        t-out="crm_list.actual_revenue"/>
+                                    <td style="padding: 10px;" align="right"
+                                        t-out="crm_list.diff_actual_target"/>
                                 </tr>
                             </t>
                         </table>
                         <br/>
                         <br/>
-                        <h1 style="color: #000;">II. Mua hàng</h1>
-                        <table class="table-without-space">
+                        <h2 style="color: #000;">II. Mua hàng</h2>
+                        <table class="table-without-space" style="border-style: double;" align="center">
                             <tr>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Stt
                                 </td>
-                                <td align="center" style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Tên phòng ban
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Chi tiêu thực tế
                                 </td>
-                                <td style="color: #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
+                                <td style="color: #000; border-bottom: 1px solid #000; font-weight: bold; border-collapse: collapse; padding: 10px;">
                                     Chênh lệch chi tiêu thực tế so với hạn mức
                                 </td>
                             </tr>
                             <t t-foreach="object.purchase_month_report" t-as="purchase_list">
                                 <tr>
-                                    <td align="center" t-esc="purchase_list_index + 1"/>
-                                    <td align="center" t-out="purchase_list.department_id.name"/>
-                                    <td align="center" t-out="purchase_list.actual_spending"/>
-                                    <td align="center" t-out="purchase_list.diff_actual_limit"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="right" t-esc="purchase_list_index + 1"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="left" t-out="purchase_list.department_id.name"/>
+                                    <td style="padding: 10px; border-right: 1px solid #000;" align="right" t-out="purchase_list.actual_spending"/>
+                                    <td style="padding: 10px;" align="right" t-out="purchase_list.diff_actual_limit"/>
                                 </tr>
                             </t>
                         </table>

@@ -6,11 +6,45 @@
             <field name="model">monthly.report</field>
             <field name="arch" type="xml">
                 <form string="monthly report">
-                    <header>
-                        <button name="monthly_report" string="Send Email"/>
-                    </header>
+                    <group>
+                        <field name="date"/>
+                    </group>
 
                     <group>
+                        <notebook string="Báo cáo kinh doanh và mua hàng">
+                            <page string="Kinh doanh">
+                                <field name="crm_month_report" widget="many2many" readonly="1">
+                                    <tree editable="bottom">
+                                        <field name="sales_team_id"/>
+                                        <field name="actual_revenue"/>
+                                        <field name="diff_actual_target"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="sales_team_id"/>
+                                            <field name="actual_revenue"/>
+                                            <field name="diff_actual_target"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page >
+                            <page string="Mua hàng">
+                                <field name="purchase_month_report" widget="many2many" readonly="1">
+                                    <tree editable="bottom">
+                                        <field name="department_id"/>
+                                        <field name="actual_spending"/>
+                                        <field name="diff_actual_limit"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="department_id"/>
+                                            <field name="actual_spending"/>
+                                            <field name="diff_actual_limit"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
                     </group>
 
                 </form>
@@ -21,7 +55,8 @@
             <field name="name">monthly report</field>
             <field name="model">monthly.report</field>
             <field name="arch" type="xml">
-                <tree string="monthly report">
+                <tree string="monthly report" create="0">
+                    <field name="date"/>
                 </tree>
             </field>
         </record>
@@ -30,13 +65,10 @@
             <field name="name">monthly report</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">monthly.report</field>
-            <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('advanced_crm.monthly_report_tree_view')}),
-            (0, 0, {'view_mode': 'form', 'view_id': ref('advanced_crm.monthly_report_form_view')})]"
-            />
+            <field name="view_id" ref="advanced_crm.monthly_report_tree_view"/>
         </record>
 
-        <menuitem name="Monthly Report" id="monthly_report_menu" parent="crm.crm_menu_root"
+        <menuitem name="Monthly Report" id="monthly_report_menu" parent="sale.menu_sale_report"
                   action="advanced_crm.monthly_report_act_window"/>
 
     </data>

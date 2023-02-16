@@ -17,9 +17,11 @@ class SaleOrderInherit(models.Model):
             return {
                 'res_model': 'plan.sale.order',
                 'type': 'ir.actions.act_window',
-                'view_mode': 'tree,form',
+                'view_mode': 'form',
                 'target': 'current',
-                'domain': [('name', '=', self.name_plan.name)],
+                'view_id': self.env.ref("plan_sale_order.plan_sale_order_form_view").id,
+                # 'domain': [('name', '=', self.name_plan.name)],
+                'res_id': self.env['plan.sale.order'].search([('name', '=', self.name_plan.name)]).id,
             }
         else:
             return {
@@ -55,3 +57,4 @@ class SaleOrderInherit(models.Model):
                 raise UserError(_('%s has not been sent.') % (self.plan_sale.name))
             else:
                 return super().action_confirm()
+
